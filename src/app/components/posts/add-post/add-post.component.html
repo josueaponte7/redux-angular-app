@@ -1,0 +1,38 @@
+<div class="row my-4">
+    <div class="col-md-12">
+        <h3>Add Post</h3>
+        <hr/>
+        <form [formGroup]="postForm" (ngSubmit)="onAddPost()" >
+            <div class="mb-3">
+                <label for="">Title</label>
+                <input type="text" class="form-control" formControlName="title">
+                <div *ngIf="f['title'].invalid && (f['title'].dirty || f['title'].touched)" >
+                    <div class="form-text text-danger"  *ngIf="f['title'].errors?.['required']">
+                        Es requerido
+                    </div>
+                    <div class="form-text text-danger"  *ngIf="f['title'].errors?.['minlength']">
+                        Minimo 6 caracteres
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="">Description</label>
+                <textarea class="form-control" formControlName="description"></textarea>
+                <div class="form-text text-danger">
+                    {{ showErrorDescription() }}
+                </div>
+                <!--<div class="form-text text-danger"  *ngIf="f['description'].invalid && (f['description'].dirty || f['description'].touched)" >
+                    <div class="form-text text-danger"  *ngIf="f['description'].errors?.['required']">
+                        Es requerido
+                    </div>
+                    <div class="form-text text-danger"  *ngIf="f['description'].errors?.['minlength']">
+                        Minimo 10 caracteres
+                    </div>
+                </div>-->
+            </div>
+            <div class="my-3">
+                <button class="btn btn-primary" type="submit" [disabled]="postForm.invalid">Add Post</button>
+            </div>
+        </form>
+    </div>
+</div>

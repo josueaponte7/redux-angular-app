@@ -1,0 +1,14 @@
+<!--<div class="my-3">{{ firstName }}</div>-->
+<div class="my-3">{{ firstName$ | async }}</div>
+<div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="add value" [(ngModel)]="value">
+        <div class="input-group-prepend">
+            <button class="btn btn-info" type="button" (click)="onAdd()" >Add counter</button>
+        </div>
+  </div>
+
+<div>
+    <input type="text" class="form-control" placeholder="change fisrt name" [(ngModel)]="changeFirstName">
+    <br/>
+    <button class="btn btn-warning" (click)="onChangeFirstName()" >Change First Name</button>
+</div>
