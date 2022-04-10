@@ -23,4 +23,13 @@ export class AuthService {
     );
     return new User(data.email, data.idToken, data.localId, expirationDate);
   }
+
+  getErrorMessage(message: string) {
+    switch (message) {
+      case 'Invalid credentials.':
+        return message;
+      default:
+        return 'Unknown error occurred. Please try again';
+    }
+  }
 }
