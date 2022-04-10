@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AuthResponseData } from '../models/AuthResponseData.model';
+import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -7,10 +10,17 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string) {
-    return this.http.post('https://127.0.0.1:8000/login', {
+  login(username: string, password: string): Observable<AuthResponseData> {
+    return this.http.post<AuthResponseData>('https://127.0.0.1:8000/login', {
       username,
       password,
     });
+  }
+
+  formatUser(data: AuthResponseData) {
+    const expirationDate = new Date(
+      new Date().getDate() + +data.expiresIn * 1000
+    );
+    return new User(data.email, data.idToken, data.localId, expirationDate);
   }
 }
