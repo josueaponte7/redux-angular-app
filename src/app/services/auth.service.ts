@@ -17,6 +17,13 @@ export class AuthService {
     });
   }
 
+  signUp(email: string, password: string): Observable<AuthResponseData> {
+    return this.http.post<AuthResponseData>('https://127.0.0.1:8000/signup', {
+      email,
+      password,
+    });
+  }
+
   formatUser(data: AuthResponseData) {
     const expirationDate = new Date(
       new Date().getDate() + +data.expiresIn * 1000
@@ -28,6 +35,8 @@ export class AuthService {
     switch (message) {
       case 'Invalid credentials.':
         return message;
+      case 'EMAIL_EXISTS':
+        return 'Email exists';
       default:
         return 'Unknown error occurred. Please try again';
     }
