@@ -8,37 +8,34 @@ import { EditPostComponent } from './edit-post/edit-post.component';
 import { StoreModule } from '@ngrx/store';
 import { postsReducer } from './state/posts.reducer';
 import { POST_STATE_NAME } from './state/posts.selector';
-
+import { EffectsModule } from '@ngrx/effects';
+import { PostsEffects } from './state/posts.effects';
 
 const routes: Routes = [
-    {
-        path: '',
-        component : PostsListComponent,
-        children: [
-            {
-                path: 'add',
-                component: AddPostComponent
-            },
-            {
-                path: 'edit/:id',
-                component: EditPostComponent
-            },
-
-        ]
-    },
-]
+  {
+    path: '',
+    component: PostsListComponent,
+    children: [
+      {
+        path: 'add',
+        component: AddPostComponent,
+      },
+      {
+        path: 'edit/:id',
+        component: EditPostComponent,
+      },
+    ],
+  },
+];
 
 @NgModule({
-  declarations: [
-    PostsListComponent,
-    AddPostComponent,
-    EditPostComponent
-  ],
+  declarations: [PostsListComponent, AddPostComponent, EditPostComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     ReactiveFormsModule,
-    StoreModule.forFeature(POST_STATE_NAME, postsReducer)
-  ]
+    StoreModule.forFeature(POST_STATE_NAME, postsReducer),
+    EffectsModule.forFeature([PostsEffects]),
+  ],
 })
-export class PostsModule { }
+export class PostsModule {}

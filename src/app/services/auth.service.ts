@@ -6,6 +6,7 @@ import { User } from '../models/user.model';
 import { autoLogout } from '../auth/state/auth.actions';
 import { AppState } from '../store/app.state';
 import { Store } from '@ngrx/store';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class AuthService {
   constructor(private http: HttpClient, private store: Store<AppState>) {}
 
   login(username: string, password: string): Observable<AuthResponseData> {
-    return this.http.post<AuthResponseData>('https://127.0.0.1:8000/login', {
+    return this.http.post<AuthResponseData>(`${environment.url}/login`, {
       username,
       password,
     });
