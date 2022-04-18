@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthService } from 'src/app/services/auth.service';
 import {
+  autoLogin,
+  autoLogout,
   loginStart,
   loginSuccess,
   signUpStart,
   signUpSuccess,
 } from './auth.actions';
-import { catchError, exhaustMap, map, of, tap } from 'rxjs';
+import { catchError, exhaustMap, map, mergeMap, of, tap } from 'rxjs';
 import { AppState } from 'src/app/store/app.state';
 import { Store } from '@ngrx/store';
 import {
@@ -34,7 +36,8 @@ export class AuthEffects {
             this.store.dispatch(setLoadingSpinner({ status: false }));
             this.store.dispatch(setErrorMessage({ message: '' }));
             const user = this.authService.formatUser(data);
-            return loginSuccess({ user });
+            this.authService.setUserInLocalStorage(user);
+            return loginSuccess({ user, redirect: true });
           }),
           catchError((errorResponse) => {
             this.store.dispatch(setLoadingSpinner({ status: false }));
@@ -53,7 +56,9 @@ export class AuthEffects {
         ofType(...[loginSuccess, signUpSuccess]),
         tap((action) => {
           this.store.dispatch(setErrorMessage({ message: '' }));
-          this.router.navigate(['/']);
+          if (action.redirect) {
+            this.router.navigate(['/']);
+          }
         })
       );
     },
@@ -68,10 +73,10 @@ export class AuthEffects {
           map((data) => {
             this.store.dispatch(setLoadingSpinner({ status: false }));
             const user = this.authService.formatUser(data);
-            return signUpSuccess({ user });
+            this.authService.setUserInLocalStorage(user);
+            return signUpSuccess({ user, redirect: true });
           }),
           catchError((errorResponse) => {
-            console.log(errorResponse.error);
             this.store.dispatch(setLoadingSpinner({ status: false }));
             const errorMessage = this.authService.getErrorMessage(
               errorResponse.error.error
@@ -89,6 +94,29 @@ export class AuthEffects {
         tap((action) => {
           this.store.dispatch(setErrorMessage({ message: '' }));
           this.router.navigate(['/']);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  autoLogin$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(autoLogin),
+      mergeMap((action) => {
+        const user = this.authService.getUserFromLocalStorage();
+        return of(loginSuccess({ user, redirect: true }));
+      })
+    );
+  });
+
+  logout$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(autoLogout),
+        map((action) => {
+          this.authService.logout();
+          this.router.navigate(['auth']);
         })
       );
     },

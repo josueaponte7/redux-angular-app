@@ -10,6 +10,5 @@ export const getLoading = createSelector(getSharedState, (state) => {
 });
 
 export const getErrorMessage = createSelector(getSharedState, (state) => {
-  console.log(state.errorMessage);
   return state.errorMessage;
 });

@@ -12,6 +12,7 @@ import { environment } from '../environments/environment.prod';
 import { appReducer } from './store/app.state';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthEffects } from './auth/state/auth.effects';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     ComponentsModule,
     SharedModule,
     StoreModule.forRoot(appReducer),
