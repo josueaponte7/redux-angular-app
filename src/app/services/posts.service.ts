@@ -23,4 +23,8 @@ export class PostsService {
       })
     );
   }
+
+  addPost(post: Post): Observable<{ id: string }> {
+    return this.http.post<{ id: string }>(`${environment.url}/post`, post);
+  }
 }

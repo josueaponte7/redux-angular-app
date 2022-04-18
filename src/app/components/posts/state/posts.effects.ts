@@ -4,7 +4,12 @@ import { PostsService } from '../../../services/posts.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.state';
 import { Router } from '@angular/router';
-import { loadPost, loadPostSuccess } from './posts.actions';
+import {
+  addPost,
+  addPostSuccess,
+  loadPost,
+  loadPostSuccess,
+} from './posts.actions';
 import { map, mergeMap } from 'rxjs';
 
 @Injectable()
@@ -23,6 +28,19 @@ export class PostsEffects {
         return this.postsService.getPost().pipe(
           map((posts) => {
             return loadPostSuccess({ posts });
+          })
+        );
+      })
+    );
+  });
+  addPost$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(addPost),
+      mergeMap((action) => {
+        return this.postsService.addPost(action.post).pipe(
+          map((data) => {
+            const post = { ...action.post, id: data.id };
+            return addPostSuccess({ post });
           })
         );
       })
