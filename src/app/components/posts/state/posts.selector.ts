@@ -12,7 +12,7 @@ export const getPosts = createSelector(getPostsState, (state) => {
 export const getPostById = createSelector(
   getPostsState,
   (state: any, props: any) => {
-    const post = state.posts.find((post: any) => post.id === parseInt(post.id));
+    const post = state.posts.find((post: any) => post.id === post.id);
     return post;
   }
 );

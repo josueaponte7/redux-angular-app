@@ -7,10 +7,14 @@ import { Router } from '@angular/router';
 import {
   addPost,
   addPostSuccess,
+  deletePost,
+  deletePostSuccess,
   loadPost,
   loadPostSuccess,
+  updatePost,
+  updatePostSuccess,
 } from './posts.actions';
-import { map, mergeMap } from 'rxjs';
+import { map, mergeMap, switchMap } from 'rxjs';
 
 @Injectable()
 export class PostsEffects {
@@ -41,6 +45,33 @@ export class PostsEffects {
           map((data) => {
             const post = { ...action.post, id: data.id };
             return addPostSuccess({ post });
+          })
+        );
+      })
+    );
+  });
+
+  updatePost$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(updatePost),
+      switchMap((action) => {
+        return this.postsService.updatePost(action.post).pipe(
+          map((data) => {
+            const post = { ...action.post, id: data.id };
+            return updatePostSuccess({ post: action.post });
+          })
+        );
+      })
+    );
+  });
+
+  deletePost$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(deletePost),
+      switchMap((action) => {
+        return this.postsService.deletePost(action.id).pipe(
+          map((data) => {
+            return deletePostSuccess({ id: action.id });
           })
         );
       })

@@ -27,4 +27,17 @@ export class PostsService {
   addPost(post: Post): Observable<{ id: string }> {
     return this.http.post<{ id: string }>(`${environment.url}/post`, post);
   }
+
+  updatePost(post: Post) {
+    const postData = {
+      id: post.id,
+      title: post.title,
+      description: post.description,
+    };
+    return this.http.put<{ id: string }>(`${environment.url}/post`, post);
+  }
+
+  deletePost(id: string) {
+    return this.http.delete(`${environment.url}/post/${id}`);
+  }
 }
