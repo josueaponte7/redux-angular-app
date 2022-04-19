@@ -27,12 +27,12 @@ export const updatePostSuccess = createAction(
 
 export const deletePost = createAction(
   DELETE_POST_ACTION,
-  props<{ id: string }>()
+  props<{ id: number }>()
 );
 
 export const deletePostSuccess = createAction(
   DELETE_POST_SUCCESS,
-  props<{ id: string }>()
+  props<{ id: number }>()
 );
 
 export const loadPost = createAction(LOAD_POST);

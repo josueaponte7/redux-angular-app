@@ -21,7 +21,7 @@ export class PostsListComponent implements OnInit {
     this.store.dispatch(loadPost());
   }
 
-  onDeletePost(id: string) {
+  onDeletePost(id: number) {
     if (confirm('¿Estas seguro que de sea eliminar el registro?')) {
       this.store.dispatch(deletePost({ id }));
     }

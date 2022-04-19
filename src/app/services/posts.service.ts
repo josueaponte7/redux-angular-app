@@ -24,8 +24,8 @@ export class PostsService {
     );
   }
 
-  addPost(post: Post): Observable<{ id: string }> {
-    return this.http.post<{ id: string }>(`${environment.url}/post`, post);
+  addPost(post: Post): Observable<{ id: number }> {
+    return this.http.post<{ id: number }>(`${environment.url}/post`, post);
   }
 
   updatePost(post: Post) {
@@ -34,10 +34,10 @@ export class PostsService {
       title: post.title,
       description: post.description,
     };
-    return this.http.put<{ id: string }>(`${environment.url}/post`, post);
+    return this.http.put<{ id: number }>(`${environment.url}/post`, post);
   }
 
-  deletePost(id: string) {
+  deletePost(id: number) {
     return this.http.delete(`${environment.url}/post/${id}`);
   }
 }
